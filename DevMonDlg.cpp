@@ -569,7 +569,6 @@ void CDevMonDlg::CreateInfSearchFolder(char *FolderName)
 BOOL CDevMonDlg::OnInitDialog()
 {
 	CString str;
-	char buf[MAX_PATH];
 
 	CreateInfSearchFolder("C:\\Drivers");
 
@@ -858,7 +857,6 @@ void CDevMonDlg::BuildDeviceInfoTree(HTREEITEM m_hAddToNode)
 		DEVINST dnThis = m_DeviceInfoData.DevInst;
 		DEVINST dnChild,dnSibling;
 		SP_DRVINFO_DATA data;
-		int nRet;
 		char InfDir[255];
 		char InfName[255];
 
@@ -896,7 +894,7 @@ void CDevMonDlg::BuildDeviceInfoTree(HTREEITEM m_hAddToNode)
 			HTREEITEM hNode,hChild;
 			TVINSERTSTRUCT tviItem;
 				
-			if(stricmp(m_strDevInfo,strTargetClass)) continue;
+			if(_stricmp(m_strDevInfo,strTargetClass)) continue;
 			
 			DWORD dwIndex=0;
 			for(int J=0;SetupDiEnumDeviceInterfaces(m_hDevInfo,NULL,&ClassGuid,dwIndex,&m_InterfaceData);J++)
@@ -905,7 +903,6 @@ void CDevMonDlg::BuildDeviceInfoTree(HTREEITEM m_hAddToNode)
 				PSP_DEVICE_INTERFACE_DETAIL_DATA pInterfaceDetail=NULL;
 				SP_DEVINFO_DATA InterfaceData;
 
-				TCHAR   szPortBaseName[81];
 				InterfaceData.cbSize = sizeof(SP_DEVINFO_DATA);
 
 				HKEY hKey = SetupDiOpenDeviceInterfaceRegKey(
@@ -1308,7 +1305,7 @@ BOOL CDevMonDlg::CreateSubtree(CDevice* pParent,CDevice* pSibling,DEVNODE  dnThi
 			}
 		}
 
-		if(!stricmp(strClass,strTargetClass))
+		if(!_stricmp(strClass,strTargetClass))
 		{
 			pClassGuid = new GUID;
 			BOOL bRet = SetupDiClassGuidsFromName(strClass,pClassGuid,1,&dwNeededSize);
@@ -1787,8 +1784,6 @@ LRESULT CDevMonDlg::OnDeviceChange(WPARAM wParam,LPARAM lParam)
 	CString str;
 	DWORD mask,i;
 	char Path[16];
-	DWORD dwRet,dwTest;
-	char SourcePath[MAX_PATH];
 	PDEV_BROADCAST_DEVICEINTERFACE hdrInfo = (PDEV_BROADCAST_DEVICEINTERFACE)lParam;
     DEV_BROADCAST_VOLUME *dbv;
 
